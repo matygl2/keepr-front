@@ -1,65 +1,45 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+export const colors = {
+  background: '#FBF2DC',
+  card: '#FFFFFF',
+  iconBg: '#F0E1BE',
 
-import '@/global.css';
+  primary: '#7A1F28',
+  primaryDark: '#5C171E',
+  secondary: '#2C4F56',
+  secondaryLight: '#3C6570',
 
-import { Platform } from 'react-native';
+  textPrimary: '#3A2A1A',
+  textSecondary: '#6E8B93',
+  textMuted: '#9A8F7A',
 
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
-} as const;
+  success: '#3F8F4F',
+  successBg: '#E1EEDF',
+  danger: '#A8323A',
+  dangerBg: '#F6D9D9',
+  warning: '#B8863A',
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+  border: '#EDE0C4',
+  white: '#FFFFFF',
+  overlay: 'rgba(58, 42, 26, 0.55)',
+};
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
+export const fonts = {
+  serif: 'PlayfairDisplay_700Bold',
+  serifRegular: 'PlayfairDisplay_400Regular',
+  sans: undefined, // uses system default
+};
 
-export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
-} as const;
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+};
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+export const radius = {
+  sm: 8,
+  md: 16,
+  lg: 24,
+  pill: 999,
+};
