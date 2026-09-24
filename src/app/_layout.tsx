@@ -5,8 +5,9 @@ import {
 } from '@expo-google-fonts/playfair-display';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import OnboardingScreens from '../components/OnboardingScreens';
 import { colors } from '../constants/theme';
 
@@ -33,19 +34,19 @@ export default function RootLayout() {
     return null;
   }
 
-  if (!hasOnboarded) {
-    return (
-      <View style={{ flex: 1, backgroundColor: colors.background }}>
-        <OnboardingScreens onFinish={() => setHasOnboarded(true)} />
-      </View>
-    );
-  }
-
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="product/[id]/index" />
-      <Stack.Screen name="product/[id]/maintenance" />
-    </Stack>
+    <SafeAreaProvider>
+      {!hasOnboarded ? (
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
+          <OnboardingScreens onFinish={() => setHasOnboarded(true)} />
+        </View>
+      ) : (
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="product/[id]/index" />
+          <Stack.Screen name="product/[id]/maintenance" />
+        </Stack>
+      )}
+    </SafeAreaProvider>
   );
 }

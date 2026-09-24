@@ -1,13 +1,12 @@
-import React from 'react';
 import {
   Alert,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import SettingsRow from '../../components/SettingsRow';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 import { currentUser } from '../../data/mockData';

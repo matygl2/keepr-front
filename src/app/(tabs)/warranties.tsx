@@ -1,13 +1,13 @@
 import { useRouter } from 'expo-router';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductIcon from '../../components/ProductIcon';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 import { formatRemaining, getWarrantyStatus, products } from '../../data/mockData';
