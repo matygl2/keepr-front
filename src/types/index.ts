@@ -31,6 +31,8 @@ export interface Product {
   serialNumber: string;
   documentation: DocumentationItem[];
   maintenanceHistory: MaintenanceEntry[];
+  /** Set once the warranty expiry has been synced to the device's native calendar. */
+  calendarEventId?: string;
 }
 
 export interface KeeprUser {

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Alert,
   ScrollView,
@@ -16,7 +17,7 @@ export default function ProfileScreen() {
     Alert.alert(label, 'This is a UI demo — this screen is not yet built.');
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Profile</Text>
 

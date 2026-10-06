@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryFilter from '../../components/CategoryFilter';
@@ -7,12 +7,14 @@ import ProductCard from '../../components/ProductCard';
 import StatsSummaryCard from '../../components/StatsSummaryCard';
 import WarrantyAlertOverlay from '../../components/WarrantyAlertOverlay';
 import { colors, fonts, spacing } from '../../constants/theme';
-import { getExpiringSoonProducts, products } from '../../data/mockData';
+import { getExpiringSoonProducts } from '../../data/mockData';
+import { useProducts } from '../../context/ProductsContext';
 
 export default function HomeScreen() {
+  const { products } = useProducts();
   const [category, setCategory] = useState('All');
   const [alertVisible, setAlertVisible] = useState(false);
-  const expiringSoon = useMemo(() => getExpiringSoonProducts(), []);
+  const expiringSoon = useMemo(() => getExpiringSoonProducts(products), [products]);
 
   useEffect(() => {
     if (expiringSoon.length > 0) {
@@ -24,10 +26,10 @@ export default function HomeScreen() {
   const filtered = useMemo(() => {
     if (category === 'All') return products;
     return products.filter((p) => p.category === category);
-  }, [category]);
+  }, [category, products]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}

@@ -5,7 +5,7 @@ import { colors } from '../../constants/theme';
 
 function TabIcon({ icon, focused }: { icon: string; focused: boolean }) {
   return (
-    <Text style={{ fontSize: 20, opacity: focused ? 1 : 0.5 }}>{icon}</Text>
+    <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.5 }}>{icon}</Text>
   );
 }
 
@@ -28,6 +28,7 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabLabel,
+        tabBarItemStyle: styles.tabItem,
       }}
     >
       <Tabs.Screen
@@ -45,10 +46,24 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="calendar"
+        options={{
+          title: 'Calendar',
+          tabBarIcon: ({ focused }) => <TabIcon icon="📅" focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
         name="scan"
         options={{
           title: '',
           tabBarIcon: ({ focused }) => <ScanButton focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="map"
+        options={{
+          title: 'Map',
+          tabBarIcon: ({ focused }) => <TabIcon icon="📍" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -74,23 +89,26 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderTopWidth: 1,
     borderTopColor: colors.border,
-    height: 78,
-    paddingTop: 10,
-    paddingBottom: 16,
+    height: 76,
+    paddingTop: 8,
+    paddingBottom: 14,
+  },
+  tabItem: {
+    paddingHorizontal: 0,
   },
   tabLabel: {
-    fontSize: 11,
+    fontSize: 9.5,
     fontWeight: '600',
   },
   scanButtonWrap: {
-    top: -22,
+    top: -20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   scanButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
@@ -104,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryDark,
   },
   scanIcon: {
-    fontSize: 24,
+    fontSize: 22,
     color: colors.white,
   },
 });
