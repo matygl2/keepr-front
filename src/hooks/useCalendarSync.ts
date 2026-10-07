@@ -22,10 +22,10 @@ export function useCalendarSync(product: Product) {
         updateProduct(product.id, { calendarEventId: undefined });
       } else {
         const granted = await requestCalendarPermission();
-        if (!granted) {
+        if (!granted) { 
           Alert.alert(
-            'Calendar permission needed',
-            'Keepr needs calendar access to add warranty reminders.'
+            'Calendar no disponible',
+            'Los recordatorios de garantía requieren una development build de Keepr. Esta función no está disponible en Expo Go.'
           );
           return;
         }
@@ -38,8 +38,8 @@ export function useCalendarSync(product: Product) {
       }
     } catch (error) {
       Alert.alert(
-        'Could not sync',
-        'Something went wrong talking to your device calendar. Please try again.'
+        'Calendar no disponible',
+        'Los recordatorios de garantía requieren una development build de Keepr. Esta función no está disponible en Expo Go.'
       );
     } finally {
       setLoading(false);

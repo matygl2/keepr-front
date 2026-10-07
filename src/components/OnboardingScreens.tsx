@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import {
-    Dimensions,
-    NativeScrollEvent,
-    NativeSyntheticEvent,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { colors, fonts, radius, spacing } from '../constants/theme';
 
@@ -32,7 +32,7 @@ function IconGrid() {
       {icons.map((icon) => (
         <View key={icon} style={styles.iconTile}>
           <Text style={styles.iconTileText}>{icon}</Text>
-        </View>  
+        </View>
       ))}
     </View>
   );

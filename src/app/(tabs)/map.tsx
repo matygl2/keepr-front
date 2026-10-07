@@ -1,5 +1,5 @@
 import * as Location from 'expo-location';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Linking,
   Platform,
@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import MapView, { Callout, Marker, PROVIDER_DEFAULT, Region } from 'react-native-maps';
+import MapView, { Region } from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 import {
@@ -130,37 +130,17 @@ export default function MapScreen() {
       </ScrollView>
 
       <View style={styles.mapWrap}>
-        <MapView
-          ref={mapRef}
-          style={StyleSheet.absoluteFill}
-          provider={PROVIDER_DEFAULT}
-          initialRegion={region}
-          showsUserLocation={!!userCoords}
-          showsMyLocationButton
-        >
-          {filtered.map((location) => (
-            <Marker
-              key={location.id}
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-              pinColor={CATEGORY_COLOR[location.category]}
-              onPress={() => setSelected(location)}
-            >
-              <Callout onPress={() => openDirections(location)}>
-                <View style={styles.calloutBox}>
-                  <Text style={styles.calloutTitle}>{location.name}</Text>
-                  <Text style={styles.calloutSubtitle}>
-                    {CATEGORY_LABEL[location.category]}
-                  </Text>
-                  <Text style={styles.calloutAddress}>{location.address}</Text>
-                  <Text style={styles.calloutLink}>Tap for directions →</Text>
-                </View>
-              </Callout>
-            </Marker>
-          ))}
-        </MapView>
+        <View style={styles.workInProgress}>
+          <Text style={styles.workInProgressIcon}>🗺️</Text>
+
+          <Text style={styles.workInProgressTitle}>
+            WORK IN PROGRESS
+          </Text>
+
+          <Text style={styles.workInProgressSubtitle}>
+            Interactive maps coming soon
+          </Text>
+        </View>
       </View>
 
       <ScrollView
@@ -225,15 +205,21 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   filterRow: {
+    flexDirection: 'row',
     gap: spacing.sm,
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
+    paddingTop: 0,
+    paddingBottom: spacing.sm,
+    alignItems: 'center',
   },
   filterPill: {
-    paddingVertical: 6,
+    minWidth: 105,
+    height: 52,
     paddingHorizontal: spacing.md,
     borderRadius: radius.pill,
     backgroundColor: colors.card,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   filterPillActive: {
     backgroundColor: colors.secondary,
@@ -247,8 +233,9 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   mapWrap: {
-    flex: 1,
+    height: 300,
     marginHorizontal: spacing.lg,
+    marginBottom: spacing.sm,
     borderRadius: radius.md,
     overflow: 'hidden',
   },
@@ -326,4 +313,34 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 12,
   },
+workInProgress: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingHorizontal: spacing.lg,
+  backgroundColor: colors.card,
+  borderWidth: 1,
+  borderColor: colors.border,
+  borderRadius: radius.lg,
+},
+
+workInProgressIcon: {
+  fontSize: 48,
+  marginBottom: spacing.md,
+},
+
+workInProgressTitle: {
+  fontFamily: fonts.serif,
+  fontSize: 22,
+  textAlign: 'center',
+  color: colors.primary,
+  marginBottom: spacing.sm,
+},
+
+workInProgressSubtitle: {
+  fontFamily: fonts.serifRegular,
+  fontSize: 14,
+  textAlign: 'center',
+  color: colors.textSecondary,
+},
 });

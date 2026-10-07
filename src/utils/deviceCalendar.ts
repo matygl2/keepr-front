@@ -5,13 +5,13 @@ import { Product } from '../types';
 const CALENDAR_TITLE = 'Keepr Warranties';
 
 export async function requestCalendarPermission(): Promise<boolean> {
-  const { status } = await Calendar.requestCalendarPermissionsAsync();
+  const { status } = await Calendar.requestCalendarPermissions();
   return status === 'granted';
 }
 
 async function getDefaultSource() {
   if (Platform.OS === 'ios') {
-    const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+    const defaultCalendar = Calendar.getDefaultCalendarSync();
     return defaultCalendar.source;
   }
   // Android has no single "default calendar" concept like iOS; fall back
@@ -23,14 +23,14 @@ async function getDefaultSource() {
   };
 }
 
-async function getOrCreateKeeprCalendarId(): Promise<string> {
-  const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+async function getOrCreateKeeprCalendar(): Promise<Calendar.ExpoCalendar>{
+  const calendars = await Calendar.getCalendars(Calendar.EntityTypes.EVENT);
   const existing = calendars.find((cal) => cal.title === CALENDAR_TITLE);
-  if (existing) return existing.id;
+  if (existing) return existing;
 
   const source = await getDefaultSource();
 
-  const newCalendarId = await Calendar.createCalendarAsync({
+  const newCalendar = await Calendar.createCalendar({
     title: CALENDAR_TITLE,
     color: '#7A1F28',
     entityType: Calendar.EntityTypes.EVENT,
@@ -41,7 +41,7 @@ async function getOrCreateKeeprCalendarId(): Promise<string> {
     accessLevel: Calendar.CalendarAccessLevel.OWNER,
   });
 
-  return newCalendarId;
+  return newCalendar;
 }
 
 /**
@@ -51,12 +51,12 @@ async function getOrCreateKeeprCalendarId(): Promise<string> {
  * removed later.
  */
 export async function syncWarrantyToCalendar(product: Product): Promise<string> {
-  const calendarId = await getOrCreateKeeprCalendarId();
+  const calendar = await getOrCreateKeeprCalendar();
 
   const startDate = new Date(`${product.warrantyExpiryDate}T09:00:00`);
   const endDate = new Date(`${product.warrantyExpiryDate}T10:00:00`);
 
-  const eventId = await Calendar.createEventAsync(calendarId, {
+  const event = await calendar.createEvent({
     title: `${product.name} warranty expires`,
     startDate,
     endDate,
@@ -65,12 +65,13 @@ export async function syncWarrantyToCalendar(product: Product): Promise<string> 
     timeZone: undefined,
   });
 
-  return eventId;
+  return event.id;
 }
 
 export async function removeWarrantyFromCalendar(eventId: string): Promise<void> {
   try {
-    await Calendar.deleteEventAsync(eventId);
+    const event = await Calendar.ExpoCalendarEvent.get(eventId);
+    await event.delete();
   } catch {
     // Event may already have been removed by the user directly in their
     // calendar app — that's fine, we just clear our local reference.

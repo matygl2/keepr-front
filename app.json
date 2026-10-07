@@ -11,6 +11,10 @@
       "icon": "./assets/expo.icon"
     },
     "android": {
+      "permissions": [
+        "READ_CALENDAR",
+        "WRITE_CALENDAR"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": "CONSEGUIR_API_KEY_GOOGLE_MAPS"
