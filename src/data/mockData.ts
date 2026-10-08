@@ -7,7 +7,7 @@ export const currentUser: KeeprUser = {
   plan: 'Keepr Pro',
 };
 
-export const products: Product[] = [
+export const initialProducts: Product[] = [
   {
     id: '1',
     name: 'HP Victus 16',
@@ -239,21 +239,38 @@ export function formatRemaining(warrantyExpiryDate: string): string {
   return `${months} month${months !== 1 ? 's' : ''} left`;
 }
 
-export function getProductById(id: string): Product | undefined {
+export function getProductById(
+  products: Product[],
+  id: string | undefined
+): Product | undefined {
   return products.find((p) => p.id === id);
 }
 
-export function getTotalRegisteredValue(): number {
+export function getTotalRegisteredValue(products: Product[]): number {
   return products.reduce((sum, p) => sum + p.price, 0);
 }
 
-export function getStats() {
+export function getStats(products: Product[]) {
   const total = products.length;
   const active = products.filter((p) => getWarrantyStatus(p.warrantyExpiryDate) === 'active').length;
   const expiring = products.filter((p) => getWarrantyStatus(p.warrantyExpiryDate) === 'expiring').length;
   return { total, active, expiring };
 }
 
-export function getExpiringSoonProducts(): Product[] {
+export function getExpiringSoonProducts(products: Product[]): Product[] {
   return products.filter((p) => getWarrantyStatus(p.warrantyExpiryDate) === 'expiring');
+}
+
+export function generateProductId(): string {
+  return `p_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+}
+
+export function addYears(dateString: string, years: number): string {
+  const date = new Date(dateString);
+  date.setFullYear(date.getFullYear() + years);
+  return date.toISOString().slice(0, 10);
+}
+
+export function todayISO(): string {
+  return new Date().toISOString().slice(0, 10);
 }

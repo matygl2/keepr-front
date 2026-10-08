@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import React from 'react';
 import {
   Alert,
   ScrollView,
@@ -16,6 +17,8 @@ import {
   getProductById,
   getWarrantyStatus,
 } from '../../../data/mockData';
+import { useProducts } from '../../../context/ProductsContext';
+import { useCalendarSync } from '../../../hooks/useCalendarSync';
 
 const STATUS_DOT_COLOR = {
   active: colors.success,
@@ -35,7 +38,8 @@ function getWarrantyProgress(purchaseDate: string, expiryDate: string): number {
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const product = getProductById(id);
+  const { products } = useProducts();
+  const product = getProductById(products, id);
 
   if (!product) {
     return (
@@ -50,6 +54,8 @@ export default function ProductDetailScreen() {
     product.purchaseDate,
     product.warrantyExpiryDate
   );
+  const { synced, loading: calendarLoading, toggle: toggleCalendarSync } =
+    useCalendarSync(product);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -119,6 +125,29 @@ export default function ProductDetailScreen() {
                 ]}
               />
             </View>
+
+            <TouchableOpacity
+              style={[
+                styles.calendarButton,
+                synced && styles.calendarButtonSynced,
+              ]}
+              onPress={toggleCalendarSync}
+              disabled={calendarLoading}
+            >
+              <Text style={styles.calendarButtonIcon}>{synced ? '✓' : '📅'}</Text>
+              <Text
+                style={[
+                  styles.calendarButtonText,
+                  synced && styles.calendarButtonTextSynced,
+                ]}
+              >
+                {calendarLoading
+                  ? 'Syncing…'
+                  : synced
+                  ? 'Added to your Calendar'
+                  : 'Add warranty reminder to Calendar'}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.card}>
@@ -305,6 +334,33 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.secondary,
     borderRadius: 3,
+  },
+  calendarButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    marginTop: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.pill,
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  calendarButtonSynced: {
+    backgroundColor: colors.successBg,
+    borderColor: colors.success,
+  },
+  calendarButtonIcon: {
+    fontSize: 14,
+  },
+  calendarButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.secondary,
+  },
+  calendarButtonTextSynced: {
+    color: colors.success,
   },
   infoRow: {
     flexDirection: 'row',

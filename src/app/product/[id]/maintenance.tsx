@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import React from 'react';
 import {
   Alert,
   ScrollView,
@@ -10,11 +11,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, fonts, radius, spacing } from '../../../constants/theme';
 import { formatDate, formatMoney, getProductById } from '../../../data/mockData';
+import { useProducts } from '../../../context/ProductsContext';
 
 export default function MaintenanceHistoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const product = getProductById(id);
+  const { products } = useProducts();
+  const product = getProductById(products, id);
 
   if (!product) {
     return (

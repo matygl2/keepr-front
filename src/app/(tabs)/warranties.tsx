@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -10,7 +10,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductIcon from '../../components/ProductIcon';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
-import { formatRemaining, getWarrantyStatus, products } from '../../data/mockData';
+import { formatRemaining, getWarrantyStatus } from '../../data/mockData';
+import { useProducts } from '../../context/ProductsContext';
 import { Product, WarrantyStatus } from '../../types';
 
 const SECTIONS: { status: WarrantyStatus; label: string; color: string }[] = [
@@ -47,6 +48,8 @@ function WarrantyRow({ product }: { product: Product }) {
 }
 
 export default function WarrantiesScreen() {
+  const { products } = useProducts();
+
   const grouped = useMemo(() => {
     return SECTIONS.map((section) => ({
       ...section,
@@ -54,10 +57,10 @@ export default function WarrantiesScreen() {
         (p) => getWarrantyStatus(p.warrantyExpiryDate) === section.status
       ),
     })).filter((section) => section.items.length > 0);
-  }, []);
+  }, [products]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Warranties</Text>
 
